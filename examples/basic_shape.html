@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<head></head>
+
+<body>
+    <canvas width='300' height='300'></canvas>
+    <script type="module">
+        import { gl, VertexShader, FregmentShader } from "../src/gl.js"
+
+        VertexShader.attributes.a_position = null;
+        VertexShader.main = function () {
+            VertexShader.gl_PointSize = 5
+            VertexShader.gl_Position = VertexShader.attributes.a_position;
+        }
+        FregmentShader.main = function () {
+            FregmentShader.gl_FragColor = [0.8, 0, 0, 0.4];
+        }
+
+        let canvas = document.querySelector('canvas');
+        let ctx = canvas.getContext("2d")
+        let program = { canvas: ctx };
+        if (!gl || !ctx) {
+            throw Error()
+        }
+
+        gl.viewport(0, 0, canvas.width, canvas.height);
+
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.useProgram(program);
+
+        var positionLocation = gl.getAttribLocation(program, "a_position");
+        var positionBuffer = gl.createBuffer();
+
+
+        function draw_point() {
+            let positions = [
+                -0.5, -0.5,
+                -0.3, 0,
+                0, -0.2,
+                0.1, 0.3,
+                0.2, 0.9
+            ];
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(positionLocation);
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+            gl.drawArrays(gl.POINTS, 0, 5);
+        }
+
+        function draw_line() {
+            let positions = [
+                -0.5, 0,
+                0.5, 1,
+                -0.3, 0.5,
+                0.3, -0.2
+            ];
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(positionLocation);
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+            gl.drawArrays(gl.GL_LINES, 0, 4);
+        }
+
+        function draw_line_strip() {
+            let positions = [
+                -0.9, 0.1,
+                0, 0,
+                0.4, 0.8,
+                0.7, 1,
+            ];
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(positionLocation);
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+            gl.drawArrays(gl.GL_LINE_STRIP, 0, 4);
+        }
+
+        function draw_line_loop() {
+            let positions = [
+                0, 0,
+                0.5, 1,
+                1, 1,
+            ];
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(positionLocation);
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+            gl.drawArrays(gl.GL_LINE_LOOP, 0, 3);
+        }
+
+        function draw_triangle() {
+            let positions = [
+                -0.8, -0.8,
+                -0.3, -0.8,
+                -0.61, 0,
+                0.8, 0.8,
+                0.3, 0.8,
+                0.61, 0,
+            ];
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(positionLocation);
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
+
+        function draw_triangle_strip() {
+            let positions = [
+                -0.5, -0.5,
+                -0.2, -0.5,
+                -0.2, 0.1,
+                0.2, 0.1,
+                0.2, 0.5
+            ];
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(positionLocation);
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+            gl.drawArrays(gl.GL_TRIANGLE_STRIP, 0, 5);
+        }
+
+        function draw_triangle_fan() {
+            let positions = [
+                0, -1,
+                -0.6, 0,
+                -0.2, 0.8,
+                0.2, 0.8,
+                0.6, 0
+            ];
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(positionLocation);
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+            gl.drawArrays(gl.GL_TRIANGLE_FAN, 0, 5);
+        }
+
+        // draw_point()
+        // draw_line()
+        // draw_line_strip()
+        // draw_line_loop()
+        // draw_triangle()
+        // draw_triangle_strip()
+        draw_triangle_fan()
+
+    </script>
+</body>
